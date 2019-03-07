@@ -19,12 +19,12 @@ passport.use(new LocalStrategy(
 ));
 
 passport.use(new SteamStrategy({
-    returnURL: 'http://localhost:3000/users/steam/callback',
-    realm: 'http://localhost:3000/',
-    apiKey: 'BD0FBFBE762E542E3090A90D3C6D8E56'
+    returnURL: `${process.env.WEB_HOST}/users/steam/callback`,
+    realm: `${process.env.WEB_HOST}`,
+    apiKey: `${process.env.STEAM_KEY}`
   },
   function(identifier, profile, done) {
-    var user = Database.find(_ => _.steam == identifier);
+    var user = Database.find(_ => _.steam == profile.id);
     if(user) {
       done(null, user);
     } else {
@@ -34,9 +34,9 @@ passport.use(new SteamStrategy({
 ));
 
 passport.use(new DiscordStrategy({
-  clientID: '548296925858889729',
-  clientSecret: '9D3U0JCaxKHtyaE8UBXfominj-dsTUu-',
-  callbackURL: 'http://localhost:3000/users/discord/callback',
+  clientID: `${process.env.DISCORD_ID}`,
+  clientSecret: `${process.env.DISCORD_SECRET}`,
+  callbackURL: `${process.env.WEB_HOST}/users/discord/callback`,
   scope: ['identify'] // 'email'
 },
 function(accessToken, refreshToken, profile, done) {

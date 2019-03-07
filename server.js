@@ -4,7 +4,11 @@
  * Module dependencies.
  */
 
-var app = require('./src/app');
+ // CONFIGURATION
+require('dotenv').config()
+
+var app = require('./src/web/app');
+var bot = require('./src/bot/app');
 var debug = require('debug')('src:server');
 var http = require('http');
 
@@ -28,6 +32,12 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+ * Start Bot listener
+ */
+
+bot.login(`${process.env.DISCORD_TOKEN}`);
 
 /**
  * Normalize a port into a number, string, or false.
