@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 var utilities = require('./utilities');
-
 var app = require('./src/web/app');
 var bot = require('./src/bot/app');
 var http = require('http');

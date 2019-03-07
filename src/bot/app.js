@@ -10,7 +10,5 @@ client.on('message', msg => {
     msg.reply('pong');
   }
 });
- 
-// client.login(`${process.env.DISCORD_TOKEN}`);
 
 module.exports = client;
