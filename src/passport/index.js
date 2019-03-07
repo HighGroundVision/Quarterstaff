@@ -4,7 +4,7 @@ var SteamStrategy = require('passport-steam').Strategy;
 var DiscordStrategy = require('passport-discord').Strategy;
 
 var Database = [
-  { id: 1, username: 'rgbknights', email: 'master@rgbknights.com', steam: '', discord: '' }
+  { id: 1, username: 'rgbknights', email: 'master@rgbknights.com', steam: '76561197973295540', discord: '319169880219975680' }
 ];
 
 passport.use(new LocalStrategy(
@@ -20,8 +20,8 @@ passport.use(new LocalStrategy(
 
 passport.use(new SteamStrategy({
     returnURL: 'http://localhost:3000/users/steam/callback',
-    realm: 'QuarterStaff', // http://localhost:3000/
-    apiKey: '#################################'
+    realm: 'http://localhost:3000/',
+    apiKey: 'BD0FBFBE762E542E3090A90D3C6D8E56'
   },
   function(identifier, profile, done) {
     var user = Database.find(_ => _.steam == identifier);
@@ -34,9 +34,10 @@ passport.use(new SteamStrategy({
 ));
 
 passport.use(new DiscordStrategy({
-  clientID: 'id',
-  clientSecret: 'secret',
-  callbackURL: 'http://localhost:3000/users/discord/callback'
+  clientID: '548296925858889729',
+  clientSecret: '9D3U0JCaxKHtyaE8UBXfominj-dsTUu-',
+  callbackURL: 'http://localhost:3000/users/discord/callback',
+  scope: ['identify'] // 'email'
 },
 function(accessToken, refreshToken, profile, done) {
   var user = Database.find(_ => _.discord == profile.id);
