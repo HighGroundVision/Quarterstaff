@@ -84,4 +84,7 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+# Steam Gruad Machine File
+.sentry
+
 # End of https://www.gitignore.io/api/node
