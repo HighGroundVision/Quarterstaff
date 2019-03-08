@@ -6,6 +6,10 @@ client.on('ready', () => {
 });
  
 client.on('message', msg => {
+  if (msg.channel.name != "bot") { // Turn Into Config
+    return;
+  }
+  
   if (msg.content === 'ping') {
     msg.reply('pong');
   }
