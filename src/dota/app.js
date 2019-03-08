@@ -107,7 +107,8 @@ steamClient.on('loggedOff', onSteamLogOff);
 steamClient.on('error', onSteamError);
 steamClient.on('servers', onSteamServers);
 
-// steamClient.connect();
+// Something not right here...
 // steamClient.disconnect();
+// steamClient.connect();
 
 module.exports = steamClient;
