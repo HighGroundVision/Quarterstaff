@@ -28,8 +28,8 @@
   <!-- remove this target if this is fixed: https://github.com/microsoft/playwright-sharp/issues/1226 -->
   <Target Name="PostPublish" AfterTargets="Publish">
     <ItemGroup>
-      <PlaywrightContent Include="$(TargetDir).playwright\win-x64\**\*.*"/>
+      <PlaywrightContent Include="$(TargetDir).playwright\**\*.*"/>
     </ItemGroup>
-    <Copy SourceFiles="@(PlaywrightContent)" DestinationFiles="@(PlaywrightContent->'$(PublishDir)\.playwright\win-x64\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(PlaywrightContent)" DestinationFiles="@(PlaywrightContent->'$(PublishDir)\.playwright\%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 </Project>
