@@ -41,12 +41,7 @@ namespace HGV.Quarterstaff.Func
         {
             string instanceId = id.ToString();
             var instance = await starter.GetStatusAsync(instanceId);
-            if(instance is null)
-            {
-                await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
-                return starter.CreateCheckStatusResponse(req, instanceId);
-            }
-            if (instance.RuntimeStatus == OrchestrationRuntimeStatus.Failed)
+            if(instance is null || instance.RuntimeStatus == OrchestrationRuntimeStatus.Failed || instance.RuntimeStatus == OrchestrationRuntimeStatus.Terminated || instance.RuntimeStatus == OrchestrationRuntimeStatus.Completed)
             {
                 await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
                 return starter.CreateCheckStatusResponse(req, instanceId);
