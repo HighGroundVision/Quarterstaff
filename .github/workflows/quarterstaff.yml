@@ -5,10 +5,10 @@ on:
     - master
 env:
   AZURE_FUNCTIONAPP_NAME: quarterstaff
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: HGV.Quarterstaff.Func\.
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: src\.
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x
-  WORKING_DIRECTORY: HGV.Quarterstaff.Func
+  WORKING_DIRECTORY: src
   DOTNET_CORE_VERSION_INPROC: ''
 jobs:
   build-and-deploy:
