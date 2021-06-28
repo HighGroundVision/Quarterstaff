@@ -34,20 +34,18 @@ namespace HGV.Quarterstaff.Func
         }
 
         [FunctionName(nameof(ImageFactoryStart))]
-        public async Task<HttpResponseMessage> ImageFactoryStart(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "generate/{id}")] HttpRequestMessage req, long id,
+        public async Task ImageFactoryStart(
+            [QueueTrigger("quarterstaff")]string instanceId,
             [DurableClient] IDurableOrchestrationClient starter,
             ILogger log)
         {
-            string instanceId = id.ToString();
             var instance = await starter.GetStatusAsync(instanceId);
-            if(instance is null || instance.RuntimeStatus == OrchestrationRuntimeStatus.Failed || instance.RuntimeStatus == OrchestrationRuntimeStatus.Terminated || instance.RuntimeStatus == OrchestrationRuntimeStatus.Completed)
-            {
-                await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
-                return starter.CreateCheckStatusResponse(req, instanceId);
-            }
+            var status = instance?.RuntimeStatus ?? OrchestrationRuntimeStatus.Unknown;
+            if(status == OrchestrationRuntimeStatus.Running || status == OrchestrationRuntimeStatus.Pending)
+                return;
 
-            return new HttpResponseMessage(System.Net.HttpStatusCode.Conflict);
+            var id = long.Parse(instanceId);
+            await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
         }
 
         [FunctionName(nameof(ImageFactoryOrchestrator))]
@@ -144,8 +142,6 @@ namespace HGV.Quarterstaff.Func
                 var image = await GetImage(id, step);
                 collection.Add(image);
             }
-
-            collection.OptimizePlus();
 
             var stream = new MemoryStream();
             await collection.WriteAsync(stream, MagickFormat.Gif);
