@@ -114,6 +114,7 @@ namespace HGV.Quarterstaff.Func
             try
             {
                 var page = await browser.NewPageAsync();
+                page.DefaultNavigationTimeout = 0;
                 await page.SetViewportAsync(this.viewportOptions);
                 await page.GoToAsync($"http://ad.datdota.com/matches/{input.id}?step={input.step}");
                 var data = await GetScreenshot(page, ".draft_replay_body");
@@ -162,6 +163,7 @@ namespace HGV.Quarterstaff.Func
             stream.Seek(0, SeekOrigin.Begin);
             var image = new MagickImage(stream, MagickFormat.Png);
             image.AnimationDelay = 25;
+            image.Resize((image.Width/3)*2, (image.Height/3)*2);        
             return image;
         }
 
