@@ -39,9 +39,20 @@ namespace HGV.Quarterstaff.Func
             [DurableClient] IDurableOrchestrationClient starter,
             ILogger log)
         {
-            string instanceId = $"{Guid.NewGuid()}";
-            await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
-            return starter.CreateCheckStatusResponse(req, instanceId);
+            string instanceId = id.ToString();
+            var instance = await starter.GetStatusAsync(instanceId);
+            if(instance is null)
+            {
+                await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
+                return starter.CreateCheckStatusResponse(req, instanceId);
+            }
+            if (instance.RuntimeStatus == OrchestrationRuntimeStatus.Failed)
+            {
+                await starter.StartNewAsync(nameof(ImageFactoryOrchestrator), instanceId, id);
+                return starter.CreateCheckStatusResponse(req, instanceId);
+            }
+
+            return new HttpResponseMessage(System.Net.HttpStatusCode.Conflict);
         }
 
         [FunctionName(nameof(ImageFactoryOrchestrator))]
