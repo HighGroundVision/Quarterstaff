@@ -91,18 +91,12 @@ namespace HGV.Quarterstaff.Func
                     var client = this.container.GetBlobClient($"/{id}/players.png");
                     await client.UploadAsync(data, true);
                 }
-                {
-                    var data = await GetScreenshot(page, ".draft_replay_body");
-                    var stream = await ConvertScreenshot(data);
-                    var client = this.container.GetBlobClient($"/{id}/draft.gif");
-                    await client.UploadAsync(stream, true);
-                } 
            
                 await page.DisposeAsync();
             }
             finally
             {
-                 await browser.CloseAsync();
+                await browser.CloseAsync();
                 await browser.DisposeAsync();
             }
         }
