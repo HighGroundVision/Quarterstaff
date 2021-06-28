@@ -143,6 +143,8 @@ namespace HGV.Quarterstaff.Func
                 collection.Add(image);
             }
 
+            collection.OptimizePlus();
+
             var stream = new MemoryStream();
             await collection.WriteAsync(stream, MagickFormat.Gif);
             stream.Seek(0, SeekOrigin.Begin);
